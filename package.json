@@ -1,0 +1,28 @@
+{
+  "name": "axial-map",
+  "version": "1.0.0",
+  "description": "A wrapper for a JS native Map object to make traversing them a bit easier.",
+  "main": "axial-map.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarcastron/axial-map.git"
+  },
+  "keywords": [
+    "Javascript",
+    "Map",
+    "traversable",
+    "axial",
+    "longitudinal",
+    "data",
+    "structure"
+  ],
+  "author": "Adam Plante",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarcastron/axial-map/issues"
+  },
+  "homepage": "https://github.com/sarcastron/axial-map#readme"
+}
