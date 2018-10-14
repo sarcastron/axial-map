@@ -14,7 +14,7 @@ class AxialMap {
     this.cursor = -1;
   }
   /**
-   * @param  {String} key
+   * @param  {string} key
    * @param  {any} object
    *
    * @return {void}
@@ -53,7 +53,7 @@ class AxialMap {
   /**
    * Returns the first key of the keys array or null.
    *
-   * @return {String|null}
+   * @return {string|null}
    */
   firstKey() {
     return this.keys[0] || null;
@@ -73,7 +73,7 @@ class AxialMap {
    *
    * @param {Number} n
    *
-   * @return {String|null}
+   * @return {string|null}
    */
   nthKey(n) {
     return this.keys[n - 1] || null;
@@ -93,7 +93,7 @@ class AxialMap {
   /**
    * Returns the last key of the keys array
    *
-   * @return {String|null}
+   * @return {string|null}
    */
   lastKey() {
     return this.keys[this.keys.length - 1] || null;
@@ -113,7 +113,7 @@ class AxialMap {
   /**
    * Get an item from the map given its key.
    *
-   * @param {String} key
+   * @param {string} key
    *
    * @return {any|null}
    */
@@ -124,7 +124,7 @@ class AxialMap {
   /**
    * Set the cursor to the position of `key` in the keys array.
    *
-   * @param {String} key
+   * @param {string} key
    *
    * @return {void}
    */
@@ -255,7 +255,7 @@ class AxialMap {
   /**
    * Removes and returns an element from the map given its key.
    *
-   * @param {String} key
+   * @param {string} key
    *
    * @return {Array|null}
    */
