@@ -1,4 +1,3 @@
-
 class AxialMap {
   /**
    *
@@ -311,4 +310,4 @@ class AxialMap {
   }
 }
 
-module.export = AxialMap;
+module.exports = AxialMap;
