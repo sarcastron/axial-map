@@ -2,7 +2,7 @@
   "name": "axial-map",
   "version": "1.0.1",
   "description": "A wrapper for a JS native Map object to make traversing them a bit easier.",
-  "main": "axial-map.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha **/*.test.js",
     "test:watch": "nodemon --exec \"npm test\"",
