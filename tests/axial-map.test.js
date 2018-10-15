@@ -198,7 +198,7 @@ describe('Axial Map', () => {
     });
   });
 
-  describe('- `slice` and `splice', () => {
+  describe('- `slice`', () => {
     let testMap;
     beforeEach(() => {
       testMap = makeAxialMap();
@@ -255,6 +255,64 @@ describe('Axial Map', () => {
           { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
         ],
       ]);
+    });
+  });
+
+  describe('- `slice`', () => {
+    let testMap;
+    beforeEach(() => {
+      testMap = makeAxialMap();
+    });
+
+    it('`splice` should return a segment of the map', () => {
+      const result = testMap.splice(2, 2);
+      assert.equal(result.length, 2);
+      assert.deepEqual(result, [
+        [
+          1539550861,
+          { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' },
+        ],
+        [
+          1539550863,
+          { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
+        ],
+      ]);
+      assert.equal(testMap.size, 3);
+    });
+
+    it('`splice` should return the rest of the map if the second param is empty', () => {
+      const result = testMap.splice(3);
+      assert.equal(result.length, 2);
+      assert.deepEqual(result, [
+        [
+          1539550863,
+          { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
+        ],
+        [
+          1539550866,
+          { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
+        ],
+      ]);
+    });
+
+    it('`splice` should return the rest of the map if the second param is out of bounds', () => {
+      const result = testMap.splice(2, 2000);
+      assert.equal(result.length, 3);
+      assert.deepEqual(result, [
+        [
+          1539550861,
+          { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' },
+        ],
+        [
+          1539550863,
+          { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
+        ],
+        [
+          1539550866,
+          { "timestamp": 1539550866, "uri": "https://fillmurray.com/640/480" },
+        ],
+      ]);
+      assert.equal(testMap.size, 2);
     });
   });
 

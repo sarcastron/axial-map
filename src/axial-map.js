@@ -236,15 +236,15 @@ class AxialMap {
    * @param {integer} start
    * @param {integer} deleteCount
    */
-  splice(start, deleteCount) {
+  splice(start, deleteCount = Infinity) {
     const key = this.keys[start];
     if (!key) {
       return [];
     }
 
     this.setCursor(key);
-    const output = this.remove[key];
-    for (let i = 1; i < deleteCount; i += 1) {
+    const output = [this.remove(key)];
+    for (let i = this.cursor; i < deleteCount; i += 1) {
       const nextItem = this.next();
       if (!nextItem) {
         break;
