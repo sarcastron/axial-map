@@ -9,6 +9,12 @@ let testData = [
   { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
   { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
 ];
+const makeAxialMap = () => {
+  return testData.reduce((acc, item) => {
+    acc.add(item.timestamp, item)
+    return acc;
+  }, new AxialMap());
+};
 
 describe('Axial Map', () => {
   describe('- Instantiation', () => {
@@ -68,13 +74,10 @@ describe('Axial Map', () => {
     });
   });
 
-  describe('- Keys and Values', () => {
-    let map;
+  describe('- Keys and values', () => {
+    let testMap;
     beforeEach(() => {
-      testMap = testData.reduce((acc, item) => {
-        acc.add(item.timestamp, item)
-        return acc;
-      }, new AxialMap());
+      testMap = makeAxialMap()
     });
 
     it('Should have the correct size.', () => {
@@ -101,6 +104,127 @@ describe('Axial Map', () => {
         testMap.get(1539550861),
         { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' }
       );
+    });
+  });
+
+  describe('- First, last, an (n)th', () => {
+    let testMap;
+    beforeEach(() => {
+      testMap = makeAxialMap();
+    });
+
+    it('Should be able to get the first key and item', () => {
+      assert.equal(testMap.firstKey(), 1539550856);
+      assert.deepEqual(
+        testMap.first(),
+        { timestamp: 1539550856, uri: 'https://fillmurray.com/g/200/300' }
+      );
+    });
+
+    it('Should be able to get the last key and item', () => {
+      assert.equal(testMap.lastKey(), 1539550866);
+      assert.deepEqual(
+        testMap.last(),
+        { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' }
+      );
+    });
+
+    it('Should be able to get the (n)th key and item', () => {
+      assert.equal(testMap.nthKey(2), 1539550858);
+      assert.deepEqual(
+        testMap.nth(2),
+        { timestamp: 1539550858, uri: 'https://fillmurray.com/200/300' }
+      );
+    });
+  });
+
+  describe('- Traverse', () => {
+    let testMap;
+    beforeEach(() => {
+      testMap = makeAxialMap();
+    });
+
+    it("`next()` should be the first item if cursor isn't set", () => {
+      assert.deepEqual(
+        testMap.next(),
+        { timestamp: 1539550856, uri: 'https://fillmurray.com/g/200/300' }
+      );
+      assert.equal(testMap.cursor, 0);
+    });
+
+    it("`nextOrLast()` should return the last item if there is no next item", () => {
+      testMap.setCursor(1539550866);
+
+      assert.deepEqual(
+        testMap.nextOrLast(),
+        { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' }
+      );
+      assert.equal(testMap.cursor, 4);
+    });
+
+    it("`current()` should be null if the cursor is set to -1", () => {
+      assert.equal(testMap.cursor, -1);
+      assert.deepEqual(testMap.current(), null);
+    });
+
+    it("`current()` should be the item at the cursor", () => {
+      testMap.setCursor(1539550863);
+
+      assert.equal(testMap.cursor, 3);
+      assert.deepEqual(
+        testMap.current(),
+        { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' }
+      );
+    });
+
+    it("`previous()` should return the previous items", () => {
+      testMap.setCursor(1539550863);
+
+      assert.deepEqual(
+        testMap.previous(),
+        { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' }
+      );
+      assert.equal(testMap.cursor, 2);
+    });
+
+    it("`previousOrFirst()` should be the 1st item if there is no previous item", () => {
+      testMap.setCursor(1539550856);
+
+      assert.deepEqual(
+        testMap.previousOrFirst(),
+        { timestamp: 1539550856, uri: 'https://fillmurray.com/g/200/300' }
+      );
+      assert.equal(testMap.cursor, 0);
+    });
+  });
+
+  describe('- Reset', () => {
+    it('Should be able to reset the map', () => {
+      const testMap = makeAxialMap();
+      testMap.reset();
+      assert.equal(testMap.size, 0);
+      assert.deepEqual(testMap.first(), null);
+      assert.deepEqual(testMap.keys, []);
+    });
+
+    it('Should be able to reset the map maintain `mazSize`', () => {
+      const testMap = new AxialMap({ maxSize: 20 });
+      testMap.add(
+        1539550866,
+        { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' }
+      );
+      testMap.add(
+        1539550896,
+        { timestamp: 1539550896, uri: 'https://fillmurray.com/g/600/200' }
+      );
+      testMap.setCursor(1539550896);
+
+      testMap.reset();
+      assert.equal(testMap.maxSize, 20);
+      assert.equal(testMap.cursor, -1);
+      assert.equal(testMap.size, 0);
+      assert.deepEqual(testMap.first(), null);
+      assert.deepEqual(testMap.keys, []);
     });
   });
 });

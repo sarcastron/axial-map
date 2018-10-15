@@ -71,7 +71,7 @@ class AxialMap {
   /**
    * Return the (n)th key of the keys array.
    *
-   * @param {Number} n
+   * @param {integer} n
    *
    * @return {string|null}
    */
@@ -168,7 +168,7 @@ class AxialMap {
     if (!this.keys[this.cursor + 1]) {
       return null;
     }
-    this.cursor += this.cursor;
+    this.cursor += 1;
     return this.current();
   }
 
