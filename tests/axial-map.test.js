@@ -9,11 +9,11 @@ let testData = [
   { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
   { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
 ];
-const makeAxialMap = () => {
+const makeAxialMap = (maxSize = null) => {
   return testData.reduce((acc, item) => {
     acc.add(item.timestamp, item)
     return acc;
-  }, new AxialMap());
+  }, new AxialMap(maxSize ? { maxSize } : undefined));
 };
 
 describe('Axial Map', () => {
@@ -313,6 +313,30 @@ describe('Axial Map', () => {
         ],
       ]);
       assert.equal(testMap.size, 2);
+    });
+  });
+
+  describe('- `each`', () => {
+
+  });
+
+  describe('- Rotating contents using mazSize', () => {
+    let testMap;
+    beforeEach(() => {
+      testMap = makeAxialMap(5);
+    });
+
+    it('Should remove the first item if maxSize is exceeded', () => {
+      testMap.add(1539550964, { herp: 'derp' });
+      assert.equal(testMap.size, 5);
+      assert.deepEqual(
+        { timestamp: 1539550858, uri: 'https://fillmurray.com/200/300' },
+        testMap.first()
+      );
+      assert.deepEqual(
+        { herp: 'derp' },
+        testMap.last()
+      );
     });
   });
 

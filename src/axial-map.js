@@ -1,6 +1,5 @@
 class AxialMap {
   /**
-   *
    * @param {Object} opts
    *
    * @return {void}
@@ -39,7 +38,7 @@ class AxialMap {
   }
 
   /**
-   * First in first out. Remove the oldest item from the map and keys array
+   * First in first out. Remove the oldest item from the map and the keys array
    *
    * @return {void}
    */
