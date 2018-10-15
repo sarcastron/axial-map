@@ -317,7 +317,36 @@ describe('Axial Map', () => {
   });
 
   describe('- `each`', () => {
+    let testMap;
+    beforeEach(() => {
+      testMap = makeAxialMap(5);
+    });
 
+    it('Should call the callback on each item with params `item`, `key`, and `index`', () => {
+      let iterations = 0;
+      let thirdItemArgs = null;
+      testMap.each((item, key, index) => {
+        if (index = 2) {
+          thirdItemArgs = { item, key, index };
+        }
+        iterations += 1;
+      });
+
+      assert.equal(iterations, 5);
+      assert.deepEqual(thirdItemArgs, {
+        item: { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
+        key: 1539550866,
+        index: 2,
+      });
+    });
+
+    it('Should throw and Error if the argument is not a function', () => {
+      assert.throws(
+        () => testMap.each('adfassdaf'),
+        Error,
+        'A callback function must be supplied as the only parameter.'
+      );
+    });
   });
 
   describe('- Rotating contents using mazSize', () => {

@@ -290,8 +290,8 @@ class AxialMap {
    * @return {void}
    */
   each(callback) {
-    if (typeof callback === 'undefined') {
-      return;
+    if (typeof callback !== 'function') {
+      throw new Error('A callback function must be supplied as the only parameter.');
     }
 
     const iterator = this.map.entries();
