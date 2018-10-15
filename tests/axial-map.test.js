@@ -47,10 +47,19 @@ describe('Axial Map', () => {
     });
 
     it('Should be able to remove an item.', () => {
-      testMap.remove(1539550866);
+      const result = testMap.remove(1539550866);
       assert.strictEqual(testMap.size, 1);
       assert.strictEqual(testMap.keys.length, 1);
       assert.deepEqual(testMap.keys, [1539550896]);
+      assert.deepEqual([
+        1539550866,
+        { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' }
+      ], result);
+    });
+
+    it('Should return `null` when key is not a real key', () => {
+      const result = testMap.remove('derp');
+      assert.strictEqual(result, null);
     });
 
     it('Should be throw an error if an key is not a integer or string', () => {
@@ -187,6 +196,16 @@ describe('Axial Map', () => {
       assert.equal(testMap.cursor, 2);
     });
 
+    it("`previous()` should return the previous items", () => {
+      testMap.setCursor(testMap.firstKey());
+
+      assert.deepEqual(
+        testMap.previous(),
+        null
+      );
+      assert.equal(testMap.cursor, 0);
+    });
+
     it("`previousOrFirst()` should be the 1st item if there is no previous item", () => {
       testMap.setCursor(1539550856);
 
@@ -202,6 +221,11 @@ describe('Axial Map', () => {
     let testMap;
     beforeEach(() => {
       testMap = makeAxialMap();
+    });
+
+    it('`slice` should return empty array if start is out of bounds', () => {
+      const result = testMap.slice(2000, 4);
+      assert.deepEqual(result, []);
     });
 
     it('`slice` should return a segment of the map', () => {
@@ -262,6 +286,11 @@ describe('Axial Map', () => {
     let testMap;
     beforeEach(() => {
       testMap = makeAxialMap();
+    });
+
+    it('`splice` should return empty array if start is out of bounds', () => {
+      const result = testMap.splice(2000, 4);
+      assert.deepEqual(result, []);
     });
 
     it('`splice` should return a segment of the map', () => {
@@ -326,7 +355,7 @@ describe('Axial Map', () => {
       let iterations = 0;
       let thirdItemArgs = null;
       testMap.each((item, key, index) => {
-        if (index = 2) {
+        if (index === 2) {
           thirdItemArgs = { item, key, index };
         }
         iterations += 1;
@@ -334,8 +363,8 @@ describe('Axial Map', () => {
 
       assert.equal(iterations, 5);
       assert.deepEqual(thirdItemArgs, {
-        item: { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
-        key: 1539550866,
+        item: { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' },
+        key: 1539550861,
         index: 2,
       });
     });
