@@ -12,14 +12,23 @@ class AxialMap {
     this.keys = [];
     this.cursor = -1;
   }
+
+  keyIsValid(key) {
+    var isString = (typeof key === 'string' || key instanceof String);
+    if (!isString && !Number.isInteger(key)) {
+      throw new Error('Key must be an integer or a string.');
+    }
+  }
+
   /**
-   * @param  {string} key
+   * @param  {string|integer} key
    * @param  {any} object
    *
    * @return {void}
    */
   add(key, object) {
-    // Don't push a new element to the keys stack if it's an update (if the key already exists).
+    this.keyIsValid(key);
+    // Don't push a new element to the keys stack if it's an update.
     if (this.keys.indexOf(key) === -1) {
       this.keys.push(key);
     }
@@ -39,14 +48,6 @@ class AxialMap {
       this.remove(this.firstKey());
     }
     this.size = this.map.size;
-  }
-  /**
-   * Returns an ordered list of keys in the map.
-   *
-   * @return {Array}
-   */
-  keys() {
-    return this.keys;
   }
 
   /**
@@ -143,9 +144,10 @@ class AxialMap {
   }
 
   /**
-   * Advances the cursor from its current position and returns the item of the map that corresponds
-   * with the new cursor position. If the cursor would advance out of bounds, then the current position
-   * (the last position) is maintained and that item is returned.
+   * Advances the cursor from its current position and returns the item of the map
+   * that corresponds with the new cursor position. If the cursor would advance out
+   * of bounds, then the current position (the last position) is maintained and
+   * that item is returned.
    *
    * `null` is returned if the map is empty.
    *
@@ -157,7 +159,8 @@ class AxialMap {
   }
 
   /**
-   * Advances the cursor and returns the next item. If the "next" item is out of bounds `null` is returned.
+   * Advances the cursor and returns the next item. If the "next" item is out of
+   * bounds `null` is returned.
    *
    * @return {any|null}
    */
@@ -170,9 +173,10 @@ class AxialMap {
   }
 
   /**
-   * Rolls back the cursor 1 position from its current position and returns the item of the map that
-   * corresponds with the new cursor position. If the cursor would roll back out of bounds, then the
-   * current position (the first position) is maintained and that item is returned.
+   * Rolls back the cursor 1 position from its current position and returns the
+   * item of the map that corresponds with the new cursor position. If the cursor
+   * would roll back out of bounds, then the current position (the first position)
+   * is maintained and that item is returned.
    *
    * `null` is returned if the map is empty.
    *
@@ -184,8 +188,8 @@ class AxialMap {
   }
 
   /**
-   * Rolls back the cursor 1 position and returns the next item. If the "previous" item is out of
-   * bounds `null` is returned.
+   * Rolls back the cursor 1 position and returns the next item. If the "previous"
+   * item is out of bounds `null` is returned.
    *
    * @return {any|null}
    */
@@ -198,11 +202,11 @@ class AxialMap {
   }
 
   /**
-   * Copies a selection of the map and returns a multidimensional array containing keys and items
-   * from `start` to `end` exclusive.
+   * Copies a selection of the map and returns a multidimensional array containing
+   * keys and items from `start` to `end` exclusive.
    *
-   * @param {Number} start
-   * @param {Number} end
+   * @param {integer} start
+   * @param {integer} end
    *
    * @return {Array}
    */
@@ -226,11 +230,11 @@ class AxialMap {
   }
 
   /**
-   * Removes a group of items from `start` to `end` exclusive. The removed items are returned as
-   * a multidimensional array containing keys and items.
+   * Removes a group of items from `start` to `end` exclusive. The removed items
+   * are returned as a multidimensional array containing keys and items.
    *
-   * @param {Number} start
-   * @param {Number} deleteCount
+   * @param {integer} start
+   * @param {integer} deleteCount
    */
   splice(start, deleteCount) {
     const key = this.keys[start];
@@ -254,17 +258,18 @@ class AxialMap {
   /**
    * Removes and returns an element from the map given its key.
    *
-   * @param {string} key
+   * @param {string|integer} key
    *
    * @return {Array|null}
    */
   remove(key) {
     if (this.map.has(key)) {
-      const element = this.map.delete(key);
-      // pull the key
+      const element = this.map.get(key);
+      this.map.delete(key);
       const index = this.keys.indexOf(key);
       if (index > -1) {
         this.keys.splice(index, 1);
+        this.size = this.map.size;
       }
       // check the cursor
       if (this.keys[this.cursor] && this.cursor > -1) {
@@ -277,8 +282,9 @@ class AxialMap {
   }
 
   /**
-   * Will iterate over each item in the map invoking the provided callback. The callback
-   * is provided three arguments. The element itself, the key, and the iteration number (index).
+   * Will iterate over each item in the map invoking the provided callback. The
+   * callback is provided three arguments. The element itself, the key, and the
+   * iteration number (index).
    *
    * @param {function} callback
    *
