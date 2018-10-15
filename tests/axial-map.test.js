@@ -198,6 +198,66 @@ describe('Axial Map', () => {
     });
   });
 
+  describe('- `slice` and `splice', () => {
+    let testMap;
+    beforeEach(() => {
+      testMap = makeAxialMap();
+    });
+
+    it('`slice` should return a segment of the map', () => {
+      const result = testMap.slice(2, 4);
+      assert.equal(result.length, 2);
+      assert.deepEqual(result, [
+        [
+          1539550861,
+          { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' },
+        ],
+        [
+          1539550863,
+          { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
+        ],
+      ]);
+    });
+
+    it('`slice` should return the rest of the map if the second param is empty', () => {
+      const result = testMap.slice(2);
+      assert.equal(result.length, 3);
+      assert.deepEqual(result, [
+        [
+          1539550861,
+          { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' },
+        ],
+        [
+          1539550863,
+          { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
+        ],
+        [
+          1539550866,
+          { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
+        ],
+      ]);
+    });
+
+    it('`slice` should return the rest of the map if the second param is out of bounds', () => {
+      const result = testMap.slice(2, 100);
+      assert.equal(result.length, 3);
+      assert.deepEqual(result, [
+        [
+          1539550861,
+          { timestamp: 1539550861, uri: 'https://fillmurray.com/200/200' },
+        ],
+        [
+          1539550863,
+          { timestamp: 1539550863, uri: 'https://fillmurray.com/600/200' },
+        ],
+        [
+          1539550866,
+          { timestamp: 1539550866, uri: 'https://fillmurray.com/640/480' },
+        ],
+      ]);
+    });
+  });
+
   describe('- Reset', () => {
     it('Should be able to reset the map', () => {
       const testMap = makeAxialMap();

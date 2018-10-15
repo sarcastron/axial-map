@@ -210,7 +210,7 @@ class AxialMap {
    *
    * @return {Array}
    */
-  slice(start, end) {
+  slice(start, end = Infinity) {
     const key = this.keys[start];
     if (!key) {
       return [];
@@ -218,7 +218,7 @@ class AxialMap {
 
     this.setCursor(key);
     const output = [[key, this.current()]];
-    for (let i = 1; i < end; i += 1) {
+    for (let i = this.cursor + 1; i < end; i += 1) {
       const nextItem = this.next();
       if (!nextItem) {
         break;
