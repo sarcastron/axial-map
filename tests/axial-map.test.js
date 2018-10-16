@@ -1,4 +1,4 @@
-const AxialMap = require('../index.js');
+const AxialMap = require('../src/AxialMap');
 const chai = require('chai');
 const assert = chai.assert;
 
